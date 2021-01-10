@@ -5,4 +5,5 @@ export interface ProductItem {
     price: number
     imageUrl: string
     added?: boolean
+    
   }

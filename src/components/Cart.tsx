@@ -1,5 +1,5 @@
 import React from "react"
-import { createStyles, Theme, makeStyles } from "@material-ui/core/styles"
+
 import {
   List,
   ListItem,
@@ -9,47 +9,52 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Avatar,
-  Typography
+  Typography,
+  Grid
 } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import { useSelector } from "react-redux"
-
+import { makeStyles } from "@material-ui/core/styles"
 import { ProductItem } from "../global"
 import { store, remove } from "../store"
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: "100%",
-      backgroundColor: theme.palette.background.paper
+const useStyles = makeStyles((theme) => ({
+  para: {
+    
+    [theme.breakpoints.down("md")]: {
+      fontSize:"1.2rem",
+      margin:'auto'
     },
-    inline: {
-      display: "inline"
-    },
-    listItem: {
-      padding: theme.spacing(1, 0),
-      justifyContent: "flex-end"
-    },
-    total: {
-      fontWeight: theme.typography.fontWeightBold,
-      fontSize: theme.typography.fontSize * 2
-    }
-  })
-)
+
+  
+  }
+}));
+
+
 
 const Cart = () => {
-  const classes = useStyles({})
+  const classes = useStyles();
   const products = useSelector((state: ProductItem[]) => state)
 
   return (
     <>
+    
+
+      <Grid container   justify="center">
       <Typography component="h2" variant="h6" color="primary" gutterBottom>
         Shopping Basket
       </Typography>
-      <Typography component="p" variant="body1">
+      </Grid>
+
+      <Grid container >
+          <Typography  variant="h5" className={classes.para}>
         You have {products.filter(product => product.added).length} items in your basket
       </Typography>
-      <List className={classes.root}>
+      </Grid>
+
+
+      
+      <List >
         {products
           .filter(product => product.added)
           .map((product: ProductItem) => (
@@ -65,7 +70,7 @@ const Cart = () => {
                       <Typography
                         component="span"
                         variant="body2"
-                        className={classes.inline}
+                        
                         color="textPrimary"
                       >
                         &pound;{(product.price / 100).toFixed(2)}
@@ -87,8 +92,11 @@ const Cart = () => {
               <Divider variant="inset" component="li" />
             </React.Fragment>
           ))}
-        <ListItem className={classes.listItem}>
-          <Typography variant="subtitle1" className={classes.total}>
+
+
+        <ListItem >
+          <Grid container justify="flex-end">
+          <Typography variant="h3"  >
             &pound;
             {(
               products
@@ -96,8 +104,14 @@ const Cart = () => {
                 .reduce((acc, current) => (acc += current.price), 0) / 100
             ).toFixed(2)}
           </Typography>
+          </Grid>
         </ListItem>
+
       </List>
+      
+
+      
+
     </>
   )
 }
